@@ -13,8 +13,11 @@ RUN npm install
 # Copy source code
 COPY . .
 
+# Install TypeScript globally for compilation
+RUN npm install -g typescript ts-node
+
 # Expose port
 EXPOSE 3000
 
-# Start the application
-CMD ["npm", "start"]
+# Start the application with ts-node
+CMD ["npx", "ts-node", "src/deploy-server.ts"]

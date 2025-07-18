@@ -6,7 +6,6 @@ const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 const path = require('path');
 const fs = require('fs');
-
 require('dotenv').config();
 
 const app = express();
@@ -23,7 +22,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Database setup
-let db: any = null;
+let db = null;
 
 async function initializeDatabase() {
   try {
@@ -110,7 +109,7 @@ async function initializeDatabase() {
 }
 
 // Routes
-app.get('/', (req: any, res: any) => {
+app.get('/', (req, res) => {
   res.send(`
     <!DOCTYPE html>
     <html>
@@ -184,7 +183,7 @@ app.get('/', (req: any, res: any) => {
   `);
 });
 
-app.get('/api/health', (req: any, res: any) => {
+app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -195,7 +194,7 @@ app.get('/api/health', (req: any, res: any) => {
   });
 });
 
-app.get('/api/users', async (req: any, res: any) => {
+app.get('/api/users', async (req, res) => {
   try {
     const users = await db.all(`
       SELECT id, username, email, first_name, last_name, role, is_active, created_at 
@@ -215,7 +214,7 @@ app.get('/api/users', async (req: any, res: any) => {
   }
 });
 
-app.get('/api/phases', async (req: any, res: any) => {
+app.get('/api/phases', async (req, res) => {
   try {
     const phases = await db.all(`
       SELECT * FROM phases 
@@ -235,7 +234,7 @@ app.get('/api/phases', async (req: any, res: any) => {
   }
 });
 
-app.post('/api/auth/login', async (req: any, res: any) => {
+app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     
@@ -285,7 +284,7 @@ app.post('/api/auth/login', async (req: any, res: any) => {
 });
 
 // 404 handler
-app.use('*', (req: any, res: any) => {
+app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
     message: 'Route not found',
@@ -294,11 +293,11 @@ app.use('*', (req: any, res: any) => {
 });
 
 // Error handling
-process.on('uncaughtException', (error: Error) => {
+process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught Exception:', error);
 });
 
-process.on('unhandledRejection', (reason: any) => {
+process.on('unhandledRejection', (reason) => {
   console.error('❌ Unhandled Rejection:', reason);
 });
 
@@ -318,7 +317,7 @@ async function startServer() {
       console.log('\n✅ Ready for deployment!');
     });
 
-    server.on('error', (error: any) => {
+    server.on('error', (error) => {
       console.error('❌ Server error:', error);
     });
 
@@ -330,4 +329,4 @@ async function startServer() {
 
 startServer();
 
-export default app;
+module.exports = app;

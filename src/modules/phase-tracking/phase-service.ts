@@ -260,7 +260,7 @@ export class PhaseService {
   async transitionEpicToPhase(epicId: number, targetPhaseId: number, notes?: string): Promise<Epic> {
     await this.canTransitionToPhase(epicId, targetPhaseId);
 
-    const transaction = await this.db.beginTransaction();
+    await this.db.beginTransaction();
 
     try {
       // Update current epic phase to completed if transitioning forward
@@ -297,7 +297,7 @@ export class PhaseService {
         WHERE id = ?
       `, [targetPhaseId, epicId]);
 
-      await transaction.commit();
+      await this.db.commit();
 
       // Return updated epic
       return await this.db.queryFirst(`
@@ -308,7 +308,7 @@ export class PhaseService {
       `, [epicId]);
 
     } catch (error) {
-      await transaction.rollback();
+      await this.db.rollback();
       throw error;
     }
   }
@@ -332,8 +332,8 @@ export class PhaseService {
     // Auto-update status based on completion percentage
     if (completionPercentage === 0) {
       updates.status = PhaseStatus.NOT_STARTED;
-      updates.start_date = null;
-      updates.end_date = null;
+      updates.start_date = undefined;
+      updates.end_date = undefined;
     } else if (completionPercentage === 100) {
       updates.status = PhaseStatus.COMPLETED;
       if (!epicPhase.end_date) {
@@ -416,7 +416,7 @@ export class PhaseService {
       return {
         phase,
         epic_phase: epicPhase!,
-        actual_duration,
+        actualDuration,
         is_current: phase.id === currentPhase.id,
         is_accessible: phase.sequence_order <= currentPhase.sequence_order
       };

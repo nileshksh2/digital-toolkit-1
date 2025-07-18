@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import { EpicService } from '../../modules/epic-management/epic-service';
-import { ApiResponse, CreateEpicRequest, UpdateEpicRequest, CreateStoryRequest, UpdateStoryRequest, CreateTaskRequest, UpdateTaskRequest, CreateSubtaskRequest, UpdateSubtaskRequest, BulkUpdateRequest } from '../../shared/types';
+import { ApiResponse, CreateEpicRequest, UpdateEpicRequest, CreateStoryRequest, UpdateStoryRequest, CreateTaskRequest, UpdateTaskRequest, CreateSubtaskRequest, UpdateSubtaskRequest, BulkUpdateRequest, RequestWithUser } from '../../shared/types';
 import { ValidationError, NotFoundError, ApplicationError } from '../../shared/types';
 import { validateRequest } from '../../shared/utils/validation';
+import { convertDatesForEpic, convertDatesForStory, convertDatesForTask, convertDatesForSubtask } from '../../shared/utils/date-converter';
 
 export class EpicController {
   constructor(private epicService: EpicService) {}
@@ -10,12 +11,16 @@ export class EpicController {
   async createEpic(req: Request, res: Response): Promise<void> {
     try {
       const epicData: CreateEpicRequest = req.body;
-      const createdBy = (req as any).user.id;
+      const createdBy = (req as RequestWithUser).user?.id;
+      if (!createdBy) {
+        throw new ValidationError('User authentication required');
+      }
 
+      const convertedData = convertDatesForEpic(epicData);
       const epic = await this.epicService.createEpic({
-        ...epicData,
+        ...convertedData,
         created_by: createdBy
-      });
+      } as any);
 
       const response: ApiResponse = {
         success: true,
@@ -57,7 +62,8 @@ export class EpicController {
       const epicId = parseInt(req.params.id);
       const updates: UpdateEpicRequest = req.body;
 
-      const epic = await this.epicService.updateEpic(epicId, updates);
+      const convertedUpdates = convertDatesForEpic(updates);
+      const epic = await this.epicService.updateEpic(epicId, convertedUpdates as any);
 
       const response: ApiResponse = {
         success: true,
@@ -115,13 +121,17 @@ export class EpicController {
     try {
       const epicId = parseInt(req.params.epicId);
       const storyData: CreateStoryRequest = req.body;
-      const createdBy = (req as any).user.id;
+      const createdBy = (req as RequestWithUser).user?.id;
+      if (!createdBy) {
+        throw new ValidationError('User authentication required');
+      }
 
+      const convertedData = convertDatesForStory(storyData);
       const story = await this.epicService.createStory({
-        ...storyData,
+        ...convertedData,
         epic_id: epicId,
         created_by: createdBy
-      });
+      } as any);
 
       const response: ApiResponse = {
         success: true,
@@ -173,7 +183,8 @@ export class EpicController {
       const storyId = parseInt(req.params.id);
       const updates: UpdateStoryRequest = req.body;
 
-      const story = await this.epicService.updateStory(storyId, updates);
+      const convertedUpdates = convertDatesForStory(updates);
+      const story = await this.epicService.updateStory(storyId, convertedUpdates as any);
 
       const response: ApiResponse = {
         success: true,
@@ -191,9 +202,10 @@ export class EpicController {
     try {
       const bulkUpdate: BulkUpdateRequest = req.body;
 
+      const convertedUpdates = convertDatesForStory(bulkUpdate.updates);
       const stories = await this.epicService.bulkUpdateStories(
         bulkUpdate.story_ids,
-        bulkUpdate.updates
+        convertedUpdates as any
       );
 
       const response: ApiResponse = {
@@ -250,13 +262,17 @@ export class EpicController {
     try {
       const storyId = parseInt(req.params.storyId);
       const taskData: CreateTaskRequest = req.body;
-      const createdBy = (req as any).user.id;
+      const createdBy = (req as RequestWithUser).user?.id;
+      if (!createdBy) {
+        throw new ValidationError('User authentication required');
+      }
 
+      const convertedData = convertDatesForTask(taskData);
       const task = await this.epicService.createTask({
-        ...taskData,
+        ...convertedData,
         story_id: storyId,
         created_by: createdBy
-      });
+      } as any);
 
       const response: ApiResponse = {
         success: true,
@@ -300,7 +316,8 @@ export class EpicController {
       const taskId = parseInt(req.params.id);
       const updates: UpdateTaskRequest = req.body;
 
-      const task = await this.epicService.updateTask(taskId, updates);
+      const convertedUpdates = convertDatesForTask(updates);
+      const task = await this.epicService.updateTask(taskId, convertedUpdates as any);
 
       const response: ApiResponse = {
         success: true,
@@ -336,13 +353,17 @@ export class EpicController {
     try {
       const taskId = parseInt(req.params.taskId);
       const subtaskData: CreateSubtaskRequest = req.body;
-      const createdBy = (req as any).user.id;
+      const createdBy = (req as RequestWithUser).user?.id;
+      if (!createdBy) {
+        throw new ValidationError('User authentication required');
+      }
 
+      const convertedData = convertDatesForSubtask(subtaskData);
       const subtask = await this.epicService.createSubtask({
-        ...subtaskData,
+        ...convertedData,
         task_id: taskId,
         created_by: createdBy
-      });
+      } as any);
 
       const response: ApiResponse = {
         success: true,
@@ -378,7 +399,8 @@ export class EpicController {
       const subtaskId = parseInt(req.params.id);
       const updates: UpdateSubtaskRequest = req.body;
 
-      const subtask = await this.epicService.updateSubtask(subtaskId, updates);
+      const convertedUpdates = convertDatesForSubtask(updates);
+      const subtask = await this.epicService.updateSubtask(subtaskId, convertedUpdates as any);
 
       const response: ApiResponse = {
         success: true,

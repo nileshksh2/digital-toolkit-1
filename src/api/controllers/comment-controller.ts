@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { CommentService } from '../../modules/comments/comment-service';
-import { ApiResponse, EntityType, CommentType } from '../../shared/types';
+import { ApiResponse, EntityType, CommentType, RequestWithUser } from '../../shared/types';
 import { ValidationError, NotFoundError, ApplicationError, ForbiddenError } from '../../shared/types';
 
 export class CommentController {
@@ -9,7 +9,7 @@ export class CommentController {
   async createComment(req: Request, res: Response): Promise<void> {
     try {
       const { entity_type, entity_id, content, is_internal, parent_comment_id, mentions } = req.body;
-      const author_id = req.user?.id;
+      const author_id = (req as RequestWithUser).user?.id;
       const attachments = req.files as Express.Multer.File[];
 
       if (!entity_type || !entity_id || !content || !author_id) {

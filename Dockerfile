@@ -19,5 +19,5 @@ RUN npm install -g typescript ts-node
 # Expose port
 EXPOSE 3000
 
-# Start the application with ts-node
-CMD ["npx", "ts-node", "src/deploy-server.ts"]
+# Start the application with Node.js
+CMD ["node", "src/deploy-server.js"]

@@ -1,4 +1,4 @@
-import { FormConfiguration, FormField, FormSubmission, FormFieldType, ValidationRule, ConditionalLogic, EntityType } from '../../shared/types';
+import { FormConfiguration, FormField, FormSubmission, FormFieldType, ValidationRule, ConditionalLogic, EntityType, FormValidationRule } from '../../shared/types';
 import { DatabaseConnection } from '../../shared/types';
 import { NotFoundError, ValidationError } from '../../shared/types';
 
@@ -529,16 +529,16 @@ export class FormBuilderService {
     };
   }
 
-  private validateRule(rule: ValidationRule, value: any): boolean {
+  private validateRule(rule: FormValidationRule, value: any): boolean {
     switch (rule.type) {
       case 'min':
-        return typeof value === 'string' ? value.length >= (rule.min || 0) : Number(value) >= (rule.min || 0);
+        return typeof value === 'string' ? value.length >= (Number(rule.value) || 0) : Number(value) >= (Number(rule.value) || 0);
       case 'max':
-        return typeof value === 'string' ? value.length <= (rule.max || Infinity) : Number(value) <= (rule.max || Infinity);
+        return typeof value === 'string' ? value.length <= (Number(rule.value) || Infinity) : Number(value) <= (Number(rule.value) || Infinity);
       case 'pattern':
-        return rule.pattern ? rule.pattern.test(String(value)) : true;
+        return rule.value ? new RegExp(rule.value).test(String(value)) : true;
       case 'custom':
-        return rule.custom ? rule.custom(value) : true;
+        return typeof rule.value === 'function' ? rule.value(value) : true;
       default:
         return true;
     }

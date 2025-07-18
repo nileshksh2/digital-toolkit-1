@@ -16,7 +16,7 @@ export class TemplateService {
     // Validate configuration
     await this.validateTemplateConfiguration(configuration);
 
-    const transaction = await this.db.beginTransaction();
+    await this.db.beginTransaction();
 
     try {
       // Create template
@@ -37,12 +37,12 @@ export class TemplateService {
         created_by
       });
 
-      await transaction.commit();
+      await this.db.commit();
 
       return await this.getTemplateById(templateId);
 
     } catch (error) {
-      await transaction.rollback();
+      await this.db.rollback();
       throw error;
     }
   }
@@ -114,7 +114,7 @@ export class TemplateService {
     const existingTemplate = await this.getTemplateById(id);
     const { name, description, configuration, changes_description, updated_by } = updates;
 
-    const transaction = await this.db.beginTransaction();
+    await this.db.beginTransaction();
 
     try {
       // Update template basic info
@@ -160,12 +160,12 @@ export class TemplateService {
         );
       }
 
-      await transaction.commit();
+      await this.db.commit();
 
       return await this.getTemplateById(id);
 
     } catch (error) {
-      await transaction.rollback();
+      await this.db.rollback();
       throw error;
     }
   }

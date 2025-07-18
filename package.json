@@ -2,7 +2,7 @@
   "name": "implementation-monitoring-system",
   "version": "1.0.0",
   "description": "Digital Toolkit for HRP Implementations",
-  "main": "dist/index.js",
+  "main": "dist/deploy-server.js",
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only src/working-server.ts",

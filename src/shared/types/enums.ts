@@ -66,3 +66,14 @@ export enum FormFieldType {
   RADIO = 'radio',
   FILE = 'file'
 }
+
+export enum CommentType {
+  GENERAL = 'general',
+  STATUS_UPDATE = 'status_update',
+  APPROVAL_REQUEST = 'approval_request',
+  FEEDBACK = 'feedback',
+  QUESTION = 'question',
+  RESOLUTION = 'resolution',
+  INTERNAL = 'internal',
+  CUSTOMER = 'customer'
+}

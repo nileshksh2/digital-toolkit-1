@@ -4,9 +4,12 @@ import sqlite3 from 'sqlite3';
 export interface DatabaseConnection {
   query(sql: string, params?: any[]): Promise<any[]>;
   queryFirst(sql: string, params?: any[]): Promise<any>;
-  run(sql: string, params?: any[]): Promise<{ lastID: number; changes: number }>;
+  run(sql: string, params?: any[]): Promise<{ lastID: number; changes: number; insertId: number }>;
   exec(sql: string): Promise<void>;
   close(): Promise<void>;
+  beginTransaction(): Promise<void>;
+  commit(): Promise<void>;
+  rollback(): Promise<void>;
 }
 
 export class SQLiteDatabaseConnection implements DatabaseConnection {
@@ -20,11 +23,12 @@ export class SQLiteDatabaseConnection implements DatabaseConnection {
     return await this.db.get(sql, params);
   }
 
-  async run(sql: string, params?: any[]): Promise<{ lastID: number; changes: number }> {
+  async run(sql: string, params?: any[]): Promise<{ lastID: number; changes: number; insertId: number }> {
     const result = await this.db.run(sql, params);
     return {
       lastID: result.lastID || 0,
-      changes: result.changes || 0
+      changes: result.changes || 0,
+      insertId: result.lastID || 0
     };
   }
 
@@ -34,5 +38,17 @@ export class SQLiteDatabaseConnection implements DatabaseConnection {
 
   async close(): Promise<void> {
     await this.db.close();
+  }
+
+  async beginTransaction(): Promise<void> {
+    await this.db.exec('BEGIN TRANSACTION');
+  }
+
+  async commit(): Promise<void> {
+    await this.db.exec('COMMIT');
+  }
+
+  async rollback(): Promise<void> {
+    await this.db.exec('ROLLBACK');
   }
 }

@@ -134,6 +134,8 @@ export interface EpicPhase extends BaseEntity {
   end_date?: Date;
   completion_percentage: number;
   notes?: string;
+  sequence_order?: number;
+  phase_name?: string;
   
   // Relationships
   epic?: Epic;
@@ -216,6 +218,7 @@ export interface Comment extends BaseEntity {
   mentioned_users?: number[];
   attachments?: CommentAttachment[];
   edited_at?: Date;
+  parent_comment_id?: number;
   
   // Relationships
   author?: User;
@@ -227,6 +230,28 @@ export interface CommentAttachment {
   file_path: string;
   file_size: number;
   mime_type: string;
+}
+
+export interface CommentThread {
+  id: number;
+  entity_type: EntityType;
+  entity_id: number;
+  comments: Comment[];
+  total_comments: number;
+  last_comment_at?: Date;
+}
+
+export interface CommentNotification {
+  id: number;
+  user_id: number;
+  comment_id: number;
+  type: NotificationType;
+  is_read: boolean;
+  created_at: Date;
+  
+  // Relationships
+  user?: User;
+  comment?: Comment;
 }
 
 export interface Attachment extends BaseEntity {
@@ -260,7 +285,7 @@ export interface FormField {
   name: string;
   placeholder?: string;
   required: boolean;
-  validation_rules?: ValidationRule[];
+  validation_rules?: FormValidationRule[];
   options?: FormFieldOption[];
   conditional_logic?: ConditionalLogic;
   default_value?: any;
@@ -271,7 +296,7 @@ export interface FormFieldOption {
   label: string;
 }
 
-export interface ValidationRule {
+export interface FormValidationRule {
   type: string;
   value?: any;
   message: string;

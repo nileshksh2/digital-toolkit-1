@@ -1,0 +1,1 @@
+web: node src/deploy-server.js

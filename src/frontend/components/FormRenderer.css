@@ -1,0 +1,373 @@
+/* Form Renderer Styles */
+.form-renderer {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.dynamic-form {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-description {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  border-left: 4px solid #3b82f6;
+}
+
+.form-description p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-field.has-error .field-input .form-control {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.field-label.required {
+  color: #1f2937;
+}
+
+.required-asterisk {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.help-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1.4;
+  margin-top: -0.25rem;
+}
+
+.field-input {
+  position: relative;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: #ffffff;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-control:disabled {
+  background: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.form-control.multiselect {
+  min-height: 120px;
+  padding: 0.5rem;
+}
+
+.form-control.multiselect option {
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+
+.form-control.multiselect option:checked {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+/* Radio Groups */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: #374151;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.radio-option:hover {
+  background: #f9fafb;
+}
+
+.radio-option input[type="radio"] {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: #3b82f6;
+}
+
+.radio-option input[type="radio"]:disabled {
+  cursor: not-allowed;
+}
+
+.radio-option span {
+  flex: 1;
+}
+
+/* Checkbox Options */
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: #374151;
+  cursor: pointer;
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.checkbox-option:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.checkbox-option input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: #3b82f6;
+}
+
+.checkbox-option input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+.checkbox-option span {
+  flex: 1;
+}
+
+/* File Inputs */
+.form-control[type="file"] {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.form-control[type="file"]:disabled {
+  cursor: not-allowed;
+}
+
+/* Error Messages */
+.field-errors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.error-message {
+  font-size: 0.75rem;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.error-message::before {
+  content: "⚠";
+  font-size: 0.875rem;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.btn-secondary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.3);
+}
+
+/* Loading States */
+.btn:disabled {
+  position: relative;
+}
+
+.btn:disabled::after {
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dynamic-form {
+    padding: 1.5rem;
+    margin: 0 1rem;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .radio-group {
+    gap: 0.5rem;
+  }
+
+  .radio-option,
+  .checkbox-option {
+    padding: 0.75rem;
+  }
+
+  .form-control.multiselect {
+    min-height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dynamic-form {
+    padding: 1rem;
+    margin: 0 0.5rem;
+  }
+
+  .form-fields {
+    gap: 1rem;
+  }
+
+  .field-label {
+    font-size: 0.8125rem;
+  }
+
+  .form-control {
+    padding: 0.625rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* Focus Management */
+.form-field:focus-within .field-label {
+  color: #3b82f6;
+}
+
+/* Print Styles */
+@media print {
+  .form-actions {
+    display: none;
+  }
+
+  .dynamic-form {
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+  }
+
+  .form-control {
+    border: 1px solid #9ca3af;
+    background: transparent;
+  }
+
+  .help-text {
+    color: #374151;
+  }
+}

@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: digital-toolkit-hrp
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        fromService:
+          type: web
+          name: digital-toolkit-hrp
+          property: port
+    disk:
+      name: sqlite-storage
+      mountPath: /app/data
+      sizeGB: 1
